@@ -45,6 +45,10 @@ public class PlayerInteractor : MonoBehaviour
             {
                 if (t.SetDistance(transform,minDistanceWithInteractable))
                 {
+                    if (Input.GetKeyDown(KeyCode.E) && !t.IsInteracting())
+                    {
+                        t.Interactable();
+                    }
                     IncreaseSizeCrosshair();
                 }
                 else
