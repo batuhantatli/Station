@@ -20,4 +20,14 @@ public class Trash : MonoBehaviour,IInteractable
     {
         
     }
+
+    public bool SetDistance(Transform player , float minDistance)
+    {
+        if (Vector3.Distance(transform.position , player.position) <= minDistance)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
