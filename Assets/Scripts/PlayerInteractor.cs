@@ -21,6 +21,8 @@ public class PlayerInteractor : MonoBehaviour
     private float _rayDistance = 100f;  // Ray uzunluğu
     private Vector3 _hitPoint;  // Çarpışma noktası
     private bool _hitDetected = false;  // Çarpışma olup olmadığını kontrol eder
+    public GameObject searchImage;
+    public Image searchFiller;
 
     private void Awake()
     {
@@ -48,6 +50,7 @@ public class PlayerInteractor : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.E) && !t.IsInteracting())
                     {
                         t.Interactable();
+                        FillSearchImage(t.InteractTime());
                     }
                     IncreaseSizeCrosshair();
                 }
@@ -103,6 +106,19 @@ public class PlayerInteractor : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_hitPoint, _radius);
         }
+    }
+
+    public void FillSearchImage(float fillTime)
+    {
+        crosshair.gameObject.SetActive(false);
+        searchImage.gameObject.SetActive(true);
+
+        searchFiller.DOFillAmount(1, fillTime).SetEase(Ease.Linear).OnComplete((() =>
+        {
+            searchImage.gameObject.SetActive(false);
+            crosshair.gameObject.SetActive(true);
+            searchFiller.fillAmount = 0;
+        }));
     }
 
 }

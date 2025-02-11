@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
+using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GarbageBin : MonoBehaviour,IInteractable
@@ -21,6 +23,7 @@ public class GarbageBin : MonoBehaviour,IInteractable
         isSearching = true;
         _source.clip = GetRandomTrashSound();
         _source.Play();
+        // SearchRotate();
         this.CallWithDelay((() =>
         {
             isSearching = false;
@@ -37,6 +40,15 @@ public class GarbageBin : MonoBehaviour,IInteractable
 
         return false;
     }
+    
+    public float strentgh;
+    public int vibration;
+    public float randomness;
+    [Button]
+    public void SearchRotate()
+    {
+        transform.DOShakeRotation(searchTime, Vector3.one * strentgh, vibration, randomness).SetEase(Ease.Linear);
+    }
 
     public bool IsInteracting()
     {
@@ -46,5 +58,10 @@ public class GarbageBin : MonoBehaviour,IInteractable
     public AudioClip GetRandomTrashSound()
     {
         return clips.GetRandomElementEnd(clips.Count);
+    }
+
+    public float InteractTime()
+    {
+        return searchTime;
     }
 }
