@@ -72,6 +72,16 @@ public class WalkSound : MonoBehaviour
             GetComponent<Animator>().SetBool("Walk",true);
 
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            GetComponent<Animator>().speed = 2;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            GetComponent<Animator>().speed = 1;
+        }
     }
 
     public void GetRandomWalk()

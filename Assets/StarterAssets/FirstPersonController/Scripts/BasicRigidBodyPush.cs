@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using StarterAssets;
+using UnityEngine;
 
 public class BasicRigidBodyPush : MonoBehaviour
 {
@@ -31,5 +33,20 @@ public class BasicRigidBodyPush : MonoBehaviour
 
 		// Apply the push and take strength into account
 		body.AddForce(pushDir * strength, ForceMode.Impulse);
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Alpha0))
+		{
+			GetComponent<FirstPersonController>().enabled = false;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha9))
+		{
+			GetComponent<FirstPersonController>().enabled = true;
+
+		}
+		
 	}
 }
