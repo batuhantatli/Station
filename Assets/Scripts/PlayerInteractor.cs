@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using DG.Tweening;
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,8 +51,18 @@ public class PlayerInteractor : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.E) && !t.IsInteracting())
                     {
-                        t.Interactable();
-                        FillSearchImage(t.InteractTime());
+                        if (t is GarbageBin)
+                        {
+                            t.Interactable();
+                            FillSearchImage(t.InteractTime());
+                        }
+
+                        if (t is NPCs npc)
+                        {
+                            SetNpcSpeak(npc);
+                            
+                        }
+
                     }
                     IncreaseSizeCrosshair();
                 }
@@ -119,6 +131,14 @@ public class PlayerInteractor : MonoBehaviour
             crosshair.gameObject.SetActive(true);
             searchFiller.fillAmount = 0;
         }));
+    }
+
+    public CinemachineVirtualCamera currentCamera;
+    public CinemachineVirtualCamera npcsCamera;
+    public void SetNpcSpeak(NPCs npc)
+    {
+        GetComponent<FirstPersonController>().enabled = false;
+        npcsCamera.Priority = 11;
     }
 
 }
