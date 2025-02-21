@@ -14,6 +14,11 @@ public class Zomb : MonoBehaviour
     // Update is called once per frame
 
 
+    private void Start()
+    {
+        GetComponent<Animator>().SetBool("Walk",true);
+    }
+
     void Update()
     {
         transform.Translate(Vector3.forward*speed*Time.deltaTime);
@@ -21,8 +26,8 @@ public class Zomb : MonoBehaviour
 
     public void WalkSound()
     {
-        var g = walks[Random.Range(0, walks.Count)];
-        s.clip = g;
-        s.Play();
+        // var g = walks[Random.Range(0, walks.Count)];
+        // s.clip = g;
+        // s.Play();
     }
 }

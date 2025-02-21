@@ -5,14 +5,22 @@ using System.IO.IsolatedStorage;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GarbageBin : MonoBehaviour,IInteractable
 {
-    public List<AudioClip> clips = new List<AudioClip>();
-    private AudioSource _source;
-    [Range(.1f,5)]public float searchTime;
+    [Header("Search")]
     public bool isSearching;
-
+    [Range(.1f,5)]public float searchTime;
+    public float strentgh=4;
+    public int vibration=4;
+    public float randomness = 90;
+    public List<AudioClip> searchSound = new List<AudioClip>();
+    
+    [Header("Interact")]
+    public float interactDistance;
+    
+    private AudioSource _source;
     private void Awake()
     {
         _source = GetComponent<AudioSource>();
@@ -31,19 +39,16 @@ public class GarbageBin : MonoBehaviour,IInteractable
         }),searchTime);
     }
 
-    public bool SetDistance(Transform player , float minDistance)
+    public bool SetDistance(Transform player)
     {
-        if (Vector3.Distance(transform.position , player.position) <= minDistance)
+        if (Vector3.Distance(transform.position , player.position) <= interactDistance)
         {
             return true;
         }
 
         return false;
     }
-    
-    public float strentgh;
-    public int vibration;
-    public float randomness;
+
     [Button]
     public void SearchRotate()
     {
@@ -57,11 +62,16 @@ public class GarbageBin : MonoBehaviour,IInteractable
 
     public AudioClip GetRandomTrashSound()
     {
-        return clips.GetRandomElementEnd(clips.Count);
+        return searchSound.GetRandomElementEnd(searchSound.Count);
     }
 
     public float InteractTime()
     {
         return searchTime;
+    }
+
+    public float InteractDistance()
+    {
+        return interactDistance;
     }
 }

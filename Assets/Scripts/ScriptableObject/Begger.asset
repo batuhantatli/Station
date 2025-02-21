@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74cda0394999924ba7077a4aea721a4, type: 3}
+  m_Name: Begger
+  m_EditorClassIdentifier: 
+  dialogs:
+  - dialogPart:
+    - I saw everything.
+    - This happens a lot here.
+    - ' I''ve been stuck for months because of it.'
+    - Every time I have enough for a ticket, that cursed face appears.
+    - ...
+    - Check around the main road.
+    - If you have to, search the trash.
+    - "But please\u2026 "
+    - Get out here.
+    - Get out.....
