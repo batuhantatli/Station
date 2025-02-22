@@ -33,10 +33,11 @@ public class PlayerInteractor : MonoBehaviour
     private Camera _camera;
     private Ray _ray;
     private RaycastHit _hit;
-
+    private FirstPersonController _firstPersonController;
     private void Awake()
     {
         _camera = Camera.main;
+        _firstPersonController = GetComponent<FirstPersonController>();
     }
 
     private void Start()
@@ -58,9 +59,9 @@ public class PlayerInteractor : MonoBehaviour
 
                 ReadyForInteract();
 
-                if (interactable is Npcs npcs)
+                if (Input.GetKeyDown(KeyCode.E) && !_isInteracted)
                 {
-                    if (Input.GetKeyDown(KeyCode.E) && !_isInteracted)
+                    if (interactable is Npcs npcs)
                     {
                         _isInteracted = true;
                         SetInteract(npcs.GetCameraLookPoint() , npcs.cameraPos);
@@ -70,7 +71,19 @@ public class PlayerInteractor : MonoBehaviour
                             NpcCamera(false);
                         }));
                     }
+                    
+                    if (interactable is GarbageBin bin)
+                    {
+                        _firstPersonController.enabled = false;
+                        FillSearchImage(bin.searchTime);
+                        StartCoroutine(bin.Search((() =>
+                        {
+                            _firstPersonController.enabled = true;
+                        })));
+                    }
                 }
+
+
             }
             else
             {

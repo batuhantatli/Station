@@ -6,28 +6,40 @@ using Random = UnityEngine.Random;
 
 public class Zomb : MonoBehaviour
 {
+    private Animator _animator;
+    public enum WalkerType
+    {
+        Carrier,
+        Old,
+        Normal
+    }
     public float speed;
+    public WalkerType walkerType;
 
-    public AudioSource s;
-
-    public List<AudioClip> walks = new List<AudioClip>();
-    // Update is called once per frame
-
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     private void Start()
     {
-        GetComponent<Animator>().SetBool("Walk",true);
+        if (walkerType == WalkerType.Carrier)
+        {
+            _animator.SetBool("CarryWalk",true);
+        }
+        else if (walkerType == WalkerType.Old)
+        {
+            _animator.SetBool("OldWalk",true);
+        }
+        else
+        {
+            var g = Random.Range(0, 3);
+            _animator.SetBool("Walk"+g,true);
+        }
     }
-
     void Update()
     {
         transform.Translate(Vector3.forward*speed*Time.deltaTime);
     }
 
-    public void WalkSound()
-    {
-        // var g = walks[Random.Range(0, walks.Count)];
-        // s.clip = g;
-        // s.Play();
-    }
 }

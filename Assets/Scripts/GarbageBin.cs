@@ -26,17 +26,16 @@ public class GarbageBin : MonoBehaviour,IInteractable
         _source = GetComponent<AudioSource>();
     }
 
-    public void Interactable()
+    public IEnumerator Search(Action onCompleteSearch)
     {
-        isSearching = true;
         _source.clip = GetRandomTrashSound();
         _source.Play();
-        // SearchRotate();
-        this.CallWithDelay((() =>
-        {
-            isSearching = false;
-            _source.Stop();
-        }),searchTime);
+        
+        yield return new WaitForSeconds(searchTime);
+            
+        isSearching = false;
+        _source.Stop();
+        onCompleteSearch?.Invoke();
     }
 
     public bool SetDistance(Transform player)

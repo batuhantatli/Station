@@ -21,6 +21,13 @@ public class Bus : MonoBehaviour
     public float rotationDeceleration = 5f; // Dönüş yavaşlama
     private float currentRotationSpeed = 0f; // Mevcut rotasyon hı
 
+    private GameManager _gameManager;
+
+    private void Awake()
+    {
+        _gameManager = GameManager.Instance;
+    }
+
     void Update()
     {
         // Engel varsa yavaşça dur, yoksa hızlan
@@ -38,6 +45,8 @@ public class Bus : MonoBehaviour
 
         // Dönüşü uygula
         TireRotator();
+
+        TargetPoint();
     }
 
     private void OnTriggerStay(Collider other)
@@ -53,6 +62,7 @@ public class Bus : MonoBehaviour
         if (other.TryGetComponent(out PlayerInteractor playerInteractor))
         {
             isObstacleAhead = false;
+
         }
     }
 
@@ -64,4 +74,27 @@ public class Bus : MonoBehaviour
             tire.transform.Rotate(rotateDirectionVector * currentRotationSpeed * Time.deltaTime);
         }
     }
+
+    public float stopDelay;
+    public bool isStop;
+    public void TargetPoint()
+    {
+        if (Mathf.Abs(_gameManager.busStopPoint.position.z - transform.position.z) <3f && !isObstacleAhead && !isStop)
+        {
+            isObstacleAhead = true;
+            isStop = true;
+            this.CallWithDelay((() =>
+            {
+                isObstacleAhead = false;
+            }),stopDelay);
+            this.CallWithDelay((() =>
+            {
+                isStop = true;
+                
+            }),stopDelay+2);            
+
+            
+        }
+    }
+    
 }

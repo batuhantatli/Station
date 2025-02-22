@@ -102,12 +102,15 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
 #else
-			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
+    Debug.LogError("Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
 
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+
+			// Save the default Y position of the camera
+			_defaultPosY = CinemachineCameraTarget.transform.localPosition.y;
 		}
 
 		private void Update()
@@ -115,11 +118,13 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+			// HandleCameraBobbing();
 		}
 
 		private void LateUpdate()
 		{
 			CameraRotation();
+			// ClampCameraPosition();
 		}
 
 		private void GroundedCheck()
@@ -264,5 +269,47 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
+		
+		[Header("Camera Bobbing")]
+		[Tooltip("The speed at which the camera bobs up and down")]
+		public float BobbingSpeed = 0.18f;
+		[Tooltip("The amount of bobbing")]
+		public float BobbingAmount = 0.2f;
+		[Tooltip("The midpoint of the bobbing")]
+		public float BobbingMidpoint = 1.8f;
+
+		private float _defaultPosY = 0f;
+		private float _timer = 0f;
+		
+		private void HandleCameraBobbing()
+		{
+			if (Mathf.Abs(_input.move.x) > 0.1f || Mathf.Abs(_input.move.y) > 0.1f)
+			{
+				// Player is moving
+				_timer += Time.deltaTime * BobbingSpeed;
+				float waveSlice = Mathf.Sin(_timer);
+				float totalAxes = Mathf.Clamp(Mathf.Abs(_input.move.x) + Mathf.Abs(_input.move.y), 0.0f, 1.0f);
+				float translateChange = totalAxes * waveSlice * BobbingAmount;
+
+				Vector3 localPosition = CinemachineCameraTarget.transform.localPosition;
+				localPosition.y = _defaultPosY + translateChange;
+				CinemachineCameraTarget.transform.localPosition = localPosition;
+			}
+			else
+			{
+				// Player is not moving, reset to default position
+				_timer = 0f;
+				Vector3 localPosition = CinemachineCameraTarget.transform.localPosition;
+				localPosition.y = Mathf.Lerp(localPosition.y, _defaultPosY, Time.deltaTime * BobbingSpeed);
+				CinemachineCameraTarget.transform.localPosition = localPosition;
+			}
+		}
+		private void ClampCameraPosition()
+		{
+			Vector3 localPosition = CinemachineCameraTarget.transform.localPosition;
+			localPosition.y = Mathf.Clamp(localPosition.y, _defaultPosY - BobbingAmount, _defaultPosY + BobbingAmount);
+			CinemachineCameraTarget.transform.localPosition = localPosition;
+		}
+
 	}
 }
