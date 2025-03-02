@@ -34,7 +34,7 @@ Material:
     - _Loop: 1
     - _Metallic: 0
     - _Size: 34
-    - _Speed: 8
+    - _Speed: 20
     - _Strength: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

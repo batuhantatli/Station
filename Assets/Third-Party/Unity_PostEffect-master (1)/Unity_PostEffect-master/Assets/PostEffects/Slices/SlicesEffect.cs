@@ -6,7 +6,7 @@ public class SlicesEffect : MonoBehaviour {
 
 	public bool on = false;
 
-	[Range(1, 200)]
+	[Range(0, 200)]
 	public int slices = 20;
 
 	[Range(0f, 1f)]
