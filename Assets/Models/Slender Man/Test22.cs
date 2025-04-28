@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test22 : MonoBehaviour
+public class Test22 : Singleton<Test22>
 {
     
     public Transform targetObject;
@@ -60,10 +60,29 @@ public class Test22 : MonoBehaviour
         }
         else
         {
-            PosterizeEffect.on = false;
-            BloomEffect.on = false;
-            source.enabled = false;
+            // PosterizeEffect.on = false;
+            // BloomEffect.on = false;
+            // source.enabled = false;
         }
+    }
+
+    public void Tester1()
+    {
+        PosterizeEffect.on = true;
+        BloomEffect.on = true;
+        PosterizeEffect.level = (int)maxPosterize;
+        BloomEffect.strength =  maxBloom;
+        badtvEffect.fineDistort = maxBadTv;
+    }
+    
+    
+    public void Tester2()
+    {
+        PosterizeEffect.on = false;
+        BloomEffect.on = false;
+        PosterizeEffect.level = (int)maxPosterize;
+        BloomEffect.strength =  maxBloom;
+        badtvEffect.fineDistort = minBadTv;
     }
 
 
